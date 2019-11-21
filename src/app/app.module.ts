@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthFormModule } from './auth-form/auth-form.module';
+import {StockInventoryModule} from './stock-inventory/stock-inventory.module';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { AuthFormModule } from './auth-form/auth-form.module';
   ],
   imports: [
     BrowserModule,
-    AuthFormModule,
+    StockInventoryModule,
     AppRoutingModule
   ],
   providers: [],
