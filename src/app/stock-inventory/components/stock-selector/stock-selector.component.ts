@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {Product} from '../../models/product.interface';
 
@@ -11,6 +11,12 @@ export class StockSelectorComponent {
   @Input() parent: FormGroup;
   @Input() products: Product[];
 
+  @Output() added = new EventEmitter<any>();
+
   constructor() { }
+
+  onAdd() {
+    this.added.emit(this.parent.get('selector').value);
+  }
 
 }
