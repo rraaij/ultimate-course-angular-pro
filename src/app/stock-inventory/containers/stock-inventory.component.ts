@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-stock-inventory',
@@ -9,9 +9,14 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class StockInventoryComponent {
   form = new FormGroup({
     store: new FormGroup({
-      branch: new FormControl('b182'),
-      code: new FormControl('123')
-    })
+      branch: new FormControl(''),
+      code: new FormControl('')
+    }),
+    selector: new FormGroup({
+      product_id: new FormControl(''),
+      quantity: new FormControl(10)
+    }),
+    stock: new FormArray([])
   });
 
   onSubmit() {
