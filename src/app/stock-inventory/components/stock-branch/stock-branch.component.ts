@@ -10,4 +10,11 @@ export class StockBranchComponent {
   @Input() parent: FormGroup;
 
   constructor() { }
+
+  required(name: string) {
+    return (
+      this.parent.get(`store.${name}`).hasError('required') &&
+      this.parent.get(`store.${name}`).touched
+    );
+  }
 }
