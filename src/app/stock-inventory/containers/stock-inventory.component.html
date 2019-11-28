@@ -11,6 +11,8 @@
                         [map]="productMap"
                         (removed)="removeStock($event)"></app-stock-products>
 
+    <div>Total: {{ total | currency:'USD':'symbol'}}</div>
+
     <div class="stock-inventory__buttons">
       <button type="submit" [disabled]="form.invalid">Order Stock</button>
     </div>
