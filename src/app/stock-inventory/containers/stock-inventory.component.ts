@@ -1,34 +1,42 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {Product} from '../models/product.interface';
+import {Item, Product} from '../models/product.interface';
+import {StockInventoryService} from '../stock-inventory.service';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-stock-inventory',
   templateUrl: './stock-inventory.component.html',
   styleUrls: ['./stock-inventory.component.scss']
 })
-export class StockInventoryComponent {
-  products: Product[] = [
-    { id: 1, price: 2800, name: 'MacBook Pro'},
-    { id: 2, price: 50, name: 'USB-C adapter'},
-    { id: 3, price: 400, name: 'iPod'},
-    { id: 4, price: 900, name: 'iPhone'},
-    { id: 5, price: 600, name: 'Apple Watch'},
-  ];
+export class StockInventoryComponent implements OnInit {
+  products: Product[] = [];
+  productMap: Map<number, Product>;
 
   form = this.fb.group({
-    store: this.fb.group({
-      branch: '',
-      code: ''
-    }),
+    store: this.fb.group({ branch: '', code: '' }),
     selector: this.createStock({}),
-    stock: this.fb.array([
-      this.createStock({ product_id: 1, quantity: 10 }),
-      this.createStock({ product_id: 3, quantity: 50 }),
-    ])
+    stock: this.fb.array([])
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private stockService: StockInventoryService) {}
+
+  ngOnInit(): void {
+    const cart$ = this.stockService.getCartItems();
+    const products$ = this.stockService.getProducts();
+
+    // merge both observables
+    forkJoin([cart$, products$]).subscribe(([cart, products]: [Item[], Product[]]) => {
+      this.products = products;
+
+      // create products Map for easier searchability
+      const myMap = products.map<[number, Product]>(product => [product.id, product]);
+      this.productMap = new Map<number, Product>(myMap);
+
+      // add the items to cart
+      cart.forEach(item => this.addStock(item));
+    });
+  }
 
   createStock(stock: any) {
     return this.fb.group({

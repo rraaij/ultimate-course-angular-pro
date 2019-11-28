@@ -3,9 +3,13 @@
 
     <app-stock-branch [parent]="form"></app-stock-branch>
 
-    <app-stock-selector [parent]="form" [products]="products" (added)="addStock($event)"></app-stock-selector>
+    <app-stock-selector [parent]="form"
+                        [products]="products"
+                        (added)="addStock($event)"></app-stock-selector>
 
-    <app-stock-products [parent]="form" (removed)="removeStock($event)"></app-stock-products>
+    <app-stock-products [parent]="form"
+                        [map]="productMap"
+                        (removed)="removeStock($event)"></app-stock-products>
 
     <div class="stock-inventory__buttons">
       <button type="submit" [disabled]="form.invalid">Order Stock</button>
