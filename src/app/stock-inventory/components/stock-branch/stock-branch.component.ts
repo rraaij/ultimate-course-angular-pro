@@ -11,6 +11,13 @@ export class StockBranchComponent {
 
   constructor() { }
 
+  get invalid() {
+    return (
+      this.parent.get('store.branch').hasError('invalidBranch') &&
+      this.parent.get('store.branch').dirty && !this.required('branch')
+    );
+  }
+
   required(name: string) {
     return (
       this.parent.get(`store.${name}`).hasError('required') &&
